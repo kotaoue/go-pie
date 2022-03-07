@@ -1,11 +1,21 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"os/exec"
 	"strings"
 )
+
+var (
+	darkMode    = flag.Bool("dark", false, "dark mode")
+	transparent = flag.Bool("transparent", false, "transparent background")
+)
+
+func init() {
+	flag.Parse()
+}
 
 func main() {
 	if err := Main(); err != nil {
@@ -15,8 +25,18 @@ func main() {
 }
 
 func Main() error {
-	args := strings.Fields(" -i sample.mmd -o sample.png -t dark -b transparent")
-	cmd := exec.Command("mmdc", args...)
+	var ss []string
+
+	ss = append(ss, "-i sample.mmd")
+	ss = append(ss, "-o sample.png")
+	if *darkMode {
+		ss = append(ss, "-t dark")
+	}
+	if *transparent {
+		ss = append(ss, "-b transparent")
+	}
+
+	cmd := exec.Command("mmdc", strings.Fields(strings.Join(ss, " "))...)
 	if err := cmd.Start(); err != nil {
 		return err
 	}
