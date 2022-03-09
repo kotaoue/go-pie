@@ -6,6 +6,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/kotaoue/go-eeditor"
 )
 
 var (
@@ -25,6 +27,14 @@ func main() {
 }
 
 func Main() error {
+	editor := eeditor.NewEditor()
+	b, _ := editor.Open()
+	fmt.Println(string(b))
+
+	return drawImage()
+}
+
+func drawImage() error {
 	var ss []string
 
 	ss = append(ss, "-i sample.mmd")
